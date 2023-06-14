@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<h3>Nama : Rian Firdaus</h3>
+<h3>Nrp  : 112021047</h3>
+<h3>Dosen: Ir. Rustamaji, MT</h3>
+
+<h2>Emitter Bias</h2>
+<img src="emitterbias.png">
+
+<head>
+  <title>Aplikasi Konfigurasi Bias Emitor</title>
+  <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+  <style>
+    .container {
+      max-width: 400px;
+      margin: 50px auto;
+    }
+    h1 {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+    .result {
+      margin-top: 30px;
+    }
+    .calculation {
+      margin-top: 20px;
+      background-color: #f5f5f5;
+      padding: 10px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>Aplikasi Konfigurasi Bias Emitor</h1>
+    <form>
+      <div class="form-group">
+        <label for="vcc">Tegangan Vcc (V): </label>
+        <input type="number" step="any" class="form-control" id="vcc" required>
+      </div>
+      <div class="form-group">
+        <label for="rc">Resistor Rc (ohm) </label>
+        <input type="number" step="any" class="form-control" id="rc" required>
+      </div>
+      <div class="form-group">
+        <label for="beta">Nilai Beta (β): </label>
+        <input type="number" step="any" class="form-control" id="beta" required>
+      </div>
+      <div class="form-group">
+        <label for="re">Resistor Re (ohm) </label>
+        <input type="number" step="any" class="form-control" id="re" required>
+      </div>
+      <button type="submit" class="btn btn-primary btn-block">Hitung</button>
+    </form>
+    <div class="result">
+      <h3>Hasil Perhitungan:</h3>
+      <p>Arus Basis (Ib): <span id="ib"></span> Ampere</p>
+      <p>Arus Kolektor (Ic): <span id="ic"></span> Ampere</p>
+      <p>Tegangan Collector-Emitter (Vce): <span id="vce"></span> Volt</p>
+      <p>Tegangan Collector (Vc): <span id="vc"></span> Volt</p>
+      <p>Tegangan Basis (Vb): <span id="vb"></span> Volt</p>
+      <p>Tegangan Emitter (Ve): <span id="ve"></span> Volt</p>
+    </div>
+    <div class="calculation">
+      <h3>Cara Menghitung:</h3>
+      <p>1. Hitung arus basis (Ib) menggunakan rumus:</p>
+      <p class="formula">Ib = (Vcc - Vbe) / ( (β + 1) * Rc + Re )</p>
+      <p>2. Hitung arus kolektor (Ic) menggunakan rumus:</p>
+      <p class="formula">Ic = β * Ib</p>
+      <p>3. Hitung tegangan Collector-Emitter (Vce) menggunakan rumus:</p>
+      <p class="formula">Vce = Vcc - (Ic * Rc)</p>
+      <p>4. Hitung tegangan Collector (Vc) menggunakan rumus:</p>
+      <p class="formula">Vc = Vcc - (Ic * Rc)</p>
+      <p>5. Hitung tegangan Basis (Vb) menggunakan rumus:</p>
+      <p class="formula">Vb = Vbe</p>
+      <p>6. Hitung tegangan Emitter (Ve) menggunakan rumus:</p>
+      <p class="formula">Ve = Vb - (Ie * Re)</p>
+    </div>
+  </div>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', function(e) {
+      e.preventDefault();
+      calculate();
+    });
+
+    function calculate() {
+      var vcc = parseFloat(document.getElementById('vcc').value);
+      var rc = parseFloat(document.getElementById('rc').value);
+      var beta = parseFloat(document.getElementById('beta').value);
+      var re = parseFloat(document.getElementById('re').value);
+
+      var vbe = 0.7; // Tegangan Basis-Emitter (Vbe) diasumsikan
+      var vb = vbe;
+      var ib = (vcc - vbe) / ((beta + 1) * rc + re);
+      var ic = beta * ib;
+      var vce = vcc - (ic * rc);
+      var vc = vcc - (ic * rc);
+      var ve = vb - (ib * re);
+
+      displayResult(ib, ic, vce, vc, vb, ve);
+    }
+
+    function displayResult(ib, ic, vce, vc, vb, ve) {
+      document.getElementById('ib').textContent = ib.toFixed(6);
+      document.getElementById('ic').textContent = ic.toFixed(6);
+      document.getElementById('vce').textContent = vce.toFixed(2);
+      document.getElementById('vc').textContent = vc.toFixed(2);
+      document.getElementById('vb').textContent = vb.toFixed(2);
+      document.getElementById('ve').textContent = ve.toFixed(2);
+    }
+  </script>
+</body>
+</html>
